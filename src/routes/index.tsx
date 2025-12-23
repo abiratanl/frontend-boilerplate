@@ -1,22 +1,26 @@
 import { createBrowserRouter } from 'react-router-dom';
 import { Suspense, lazy } from 'react';
 
-// Importação dos Layouts
+// Layout Imports
 import { AppLayout } from '../components/layouts/AppLayout';
 import { AuthLayout } from '../components/layouts/AuthLayout';
 
-// Lazy Loading das Páginas (Code Splitting)
-// Note que agora importamos a Home também
-const Home = lazy(() => import('../pages/Home')); 
+// Security Guard Import
+import { PrivateRoute } from '../components/PrivateRoute';
+
+// Lazy Loading Pages (Code Splitting)
+const Home = lazy(() => import('../pages/Home'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Login = lazy(() => import('../pages/Login'));
+const ChangePassword = lazy(() => import('../pages/ChangePassword')); // New addition
 const NotFound = lazy(() => import('../pages/NotFound'));
 
-// Componente de Loading simples
-const Loading = () => <div style={{ padding: 20 }}>Carregando...</div>;
+// Simple Loading Component
+const Loading = () => <div style={{ padding: 20 }}>Loading...</div>;
 
 export const router = createBrowserRouter([
-  // 1. ROTA PÚBLICA (RAIZ)
+  // 1. PUBLIC ROUTE (ROOT)
+  // Landing Page showing the company info
   {
     path: "/",
     element: (
@@ -26,7 +30,8 @@ export const router = createBrowserRouter([
     )
   },
 
-  // 2. ROTAS DE AUTENTICAÇÃO (Login, Recuperar Senha, etc)
+  // 2. AUTHENTICATION ROUTES
+  // Uses AuthLayout (Clean centered layout)
   {
     path: "/auth",
     element: <AuthLayout />,
@@ -38,29 +43,43 @@ export const router = createBrowserRouter([
             <Login />
           </Suspense>
         )
-      }
-    ]
-  },
-
-  // 3. ROTAS PRIVADAS DO SISTEMA (Dashboard, Clientes, etc)
-  {
-    // Não definimos "path" aqui, apenas o elemento Layout.
-    // Isso cria um "Layout Wrapper" para as rotas filhas.
-    element: <AppLayout />,
-    children: [
+      },
       {
-        path: "/dashboard", // O caminho final será apenas /dashboard
+        path: "change-password",
         element: (
           <Suspense fallback={<Loading />}>
-            <Dashboard />
+            <ChangePassword />
           </Suspense>
         )
       }
-      // Outras rotas do sistema virão aqui
     ]
   },
 
-  // 4. ROTA 404 (Catch-all)
+  // 3. PRIVATE SYSTEM ROUTES
+  // These routes require the user to be logged in.
+  {
+    // The Guard checks if the user has a valid session
+    element: <PrivateRoute />, 
+    children: [
+      {
+        // If passed the Guard, render the Main App Layout (Sidebar/Header)
+        element: <AppLayout />, 
+        children: [
+          {
+            path: "/dashboard", 
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Dashboard />
+              </Suspense>
+            )
+          }
+          // Future protected routes go here (e.g., /products, /rentals)
+        ]
+      }
+    ]
+  },
+
+  // 4. 404 CATCH-ALL
   {
     path: "*",
     element: (
