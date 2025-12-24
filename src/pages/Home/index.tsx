@@ -9,8 +9,8 @@ export default function Home() {
       padding: '50px 20px' 
     }}>
       <header style={{ marginBottom: '50px' }}>
-        <h1 style={{ fontSize: '2.5rem', color: '#333' }}>Minha Loja de Roupas</h1>
-        <p style={{ color: '#666' }}>O melhor estilo para você (Página Pública)</p>
+        <h1 style={{ fontSize: '2.5rem', color: '#333' }}>Madri Noivas</h1>
+        <p style={{ color: '#666' }}>Você vive o momento, nós vestimos a memória</p>
       </header>
 
       <main>
@@ -21,12 +21,12 @@ export default function Home() {
           maxWidth: '400px', 
           margin: '0 auto' 
         }}>
-          <h3>Área do Cliente</h3>
-          <p>Acesse o sistema para gerenciar seus aluguéis.</p>
+          <h3>Área Restrita</h3>
+          <p>Acesse o sistema para gerenciar os aluguéis.</p>
           
           <br />
           
-          {/* Link que leva para a rota de Login definida no router */}
+          {/* Link that leads to the login route defined in the router. */}
           <Link to="/auth/login" style={{ 
             display: 'inline-block',
             backgroundColor: '#007bff', 

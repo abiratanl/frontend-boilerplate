@@ -1,71 +1,63 @@
-import { useState } from 'react';
-import { useAuth } from '../../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
+// src/pages/Login/index.tsx
+import { useLogin } from '../../hooks/useLogin'; // Importe o Hook novo
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-  
-  const { signIn } = useAuth();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setErrorMsg('');
-
-    try {
-      const result = await signIn(email, password);
-
-      if (result.success) {
-        // 1. Login normal -> Dashboard
-        navigate('/dashboard');
-      } else if (result.mustChangePassword) {
-        // 2. Precisa trocar senha -> Tela de Troca
-        // Passamos o token temporário via 'state' do router para não expor na URL
-        navigate('/auth/change-password', { 
-          state: { tempToken: result.tempToken } 
-        });
-      }
-
-    } catch (error: any) {
-      // 3. Erro comum (senha errada)
-      console.log(error);
-      if (error.response?.data?.message) {
-        setErrorMsg(error.response.data.message);
-      } else {
-        setErrorMsg('Erro ao conectar ao servidor.');
-      }
-    }
-  };
+  // Chamamos o hook e pegamos só o que precisamos
+  const { 
+    email, setEmail, 
+    password, setPassword, 
+    loading, error, 
+    handleSubmit 
+  } = useLogin();
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h2>Acessar Sistema</h2>
-      
-      {errorMsg && (
-        <div style={{ color: 'red', marginBottom: '10px', background: '#ffe6e6', padding: '10px' }}>
-          {errorMsg}
-        </div>
-      )}
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="max-w-md w-full bg-white p-8 rounded shadow-lg">
+        
+        <h2 className="text-2xl font-bold mb-6 text-center text-slate-800">
+          Acesso ao Sistema
+        </h2>
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '10px', maxWidth: '300px', margin: '0 auto' }}>
-        <input 
-          type="email" 
-          placeholder="E-mail"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input 
-          type="password" 
-          placeholder="Senha"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Entrar</button>
-      </form>
+        {error && (
+          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm text-center">
+            {error}
+          </div>
+        )}
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Email</label>
+            <input
+              type="email"
+              required
+              className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Senha</label>
+            <input
+              type="password"
+              required
+              className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full py-2 px-4 rounded text-white font-bold transition-colors
+              ${loading ? 'bg-gray-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'}`}
+          >
+            {loading ? 'Entrando...' : 'Entrar'}
+          </button>
+        </form>
+
+      </div>
     </div>
   );
 }

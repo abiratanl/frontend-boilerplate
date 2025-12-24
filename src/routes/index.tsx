@@ -12,15 +12,18 @@ import { PrivateRoute } from '../components/PrivateRoute';
 const Home = lazy(() => import('../pages/Home'));
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Login = lazy(() => import('../pages/Login'));
-const ChangePassword = lazy(() => import('../pages/ChangePassword')); // New addition
+const ChangePassword = lazy(() => import('../pages/ChangePassword'));
 const NotFound = lazy(() => import('../pages/NotFound'));
+const RentalPage = lazy(() => import('../pages/Rentals/RentalPage'));
+
+// --- 1. ADICIONE ESTA LINHA (Import da nova página) ---
+const Users = lazy(() => import('../pages/Users/UserPage')); 
 
 // Simple Loading Component
 const Loading = () => <div style={{ padding: 20 }}>Loading...</div>;
 
 export const router = createBrowserRouter([
   // 1. PUBLIC ROUTE (ROOT)
-  // Landing Page showing the company info
   {
     path: "/",
     element: (
@@ -31,7 +34,6 @@ export const router = createBrowserRouter([
   },
 
   // 2. AUTHENTICATION ROUTES
-  // Uses AuthLayout (Clean centered layout)
   {
     path: "/auth",
     element: <AuthLayout />,
@@ -56,13 +58,10 @@ export const router = createBrowserRouter([
   },
 
   // 3. PRIVATE SYSTEM ROUTES
-  // These routes require the user to be logged in.
   {
-    // The Guard checks if the user has a valid session
     element: <PrivateRoute />, 
     children: [
       {
-        // If passed the Guard, render the Main App Layout (Sidebar/Header)
         element: <AppLayout />, 
         children: [
           {
@@ -72,11 +71,30 @@ export const router = createBrowserRouter([
                 <Dashboard />
               </Suspense>
             )
-          }
-          // Future protected routes go here (e.g., /products, /rentals)
+          },          
+          {
+            path: "/users", 
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Users />
+              </Suspense>
+            )
+          },
+          // Attendant Rental Page (NEW)
+          {
+            path: "/rentals", 
+            element: (
+              <Suspense fallback={<Loading />}>
+                <RentalPage />
+              </Suspense>
+            )
+          }         
         ]
+        
       }
+      
     ]
+    
   },
 
   // 4. 404 CATCH-ALL
