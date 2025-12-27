@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { useLogin } from '../../hooks/useLogin';
 
 export default function Login() {
-  // Lógica de UI local (Dark Mode)
-  const [darkMode, setDarkMode] = useState(false);
+  // Lógica de UI: Inicializa verificando o localStorage ou preferência do sistema
+  const [darkMode, setDarkMode] = useState(() => {
+    // 1. Verifica se já existe algo salvo
+    const savedTheme = localStorage.getItem("madri-theme");
+    if (savedTheme) {
+      return savedTheme === "dark";
+    }
+    // 2. Se não, verifica a preferência do sistema operacional
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  });
 
-  // Lógica de Negócio (extraída do seu hook atual)
+  // Efeito para salvar a escolha sempre que mudar
+  useEffect(() => {
+    if (darkMode) {
+      localStorage.setItem("madri-theme", "dark");
+    } else {
+      localStorage.setItem("madri-theme", "light");
+    }
+  }, [darkMode]);
+
+  // Business Logic (of the existing hook)
   const { 
     email, setEmail, 
     password, setPassword, 
@@ -24,11 +42,11 @@ export default function Login() {
               Madri Noivas
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
-              Bemvindo(a) à nossa plataforma!
+              Benvindo(a) à nossa plataforma!
             </p>
           </div>
 
-          {/* Exibição de Erro (Adaptado para o novo design) */}
+          {/* Exibição de Erro */}
           {error && (
             <div className="mb-4 p-3 rounded-lg text-sm text-center 
                           bg-red-50 text-red-600 border border-red-100
@@ -99,14 +117,10 @@ export default function Login() {
           </form>
 
           {/* Links */}
-          <div className="flex justify-between mt-6 text-sm">
-            <a href="#" className="text-madriGold hover:underline">
+          <div className="flex justify-end mt-6 text-sm">
+            <Link to="/auth/forgot-password" className="text-madriGold hover:underline">
               Esqueci minha senha
-            </a>
-            {/* Mantendo o link de trocar senha caso seja útil, se não, pode remover */}
-            <a href="#" className="text-madriGold hover:underline">
-              Trocar Senha
-            </a>
+            </Link>            
           </div>
 
           {/* Dark Mode Toggle */}
@@ -114,7 +128,7 @@ export default function Login() {
             <button
               onClick={() => setDarkMode(!darkMode)}
               className="text-xs text-gray-600 dark:text-gray-400 hover:underline focus:outline-none"
-              type="button" // Importante para não submeter o form
+              type="button"
             >
               {darkMode ? "Mudar para Modo Claro ☀️" : "Mudar para Modo Escuro 🌙"}
             </button>

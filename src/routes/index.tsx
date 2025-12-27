@@ -10,7 +10,6 @@ import { PrivateRoute } from '../components/PrivateRoute';
 
 // Lazy Loading Pages
 const ChangePassword = lazy(() => import('../pages/ChangePassword'));
-// Ajuste o nome do import se sua pasta for 'Client' no singular ou 'Clients' no plural
 const ClientPage = lazy(() => import('../pages/Clients')); 
 const Dashboard = lazy(() => import('../pages/Dashboard'));
 const Home = lazy(() => import('../pages/Home')); // Landing Page Pública
@@ -18,6 +17,9 @@ const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 const Rentals = lazy(() => import('../pages/Rentals'));
 const Users = lazy(() => import('../pages/Users')); 
+
+const ForgotPassword = lazy(() => import('../pages/ForgotPassword'));
+const ResetPassword = lazy(() => import('../pages/ResetPassword'));
 
 // Simple Loading Component
 const Loading = () => (
@@ -50,6 +52,24 @@ export const router = createBrowserRouter([
           </Suspense>
         )
       },
+      // --- RECOVERY ROUTES ---
+      {
+        path: "forgot-password",
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ForgotPassword />
+          </Suspense>
+        )
+      },
+      {
+        path: "reset-password/:token", // The :token captures the URL code.
+        element: (
+          <Suspense fallback={<Loading />}>
+            <ResetPassword />
+          </Suspense>
+        )
+      },
+      // ----------------------------------
       {
         path: "change-password",
         element: (
@@ -63,15 +83,15 @@ export const router = createBrowserRouter([
 
   // 3. PRIVATE SYSTEM ROUTES
   {
-    // GUARDA DE NÍVEL 1: Verifica apenas se está logado
+    // Level 1 Guard: Only checks if you are logged in.
     element: <PrivateRoute />, 
     children: [
       {
-        // LAYOUT: Menu Lateral e Topbar aparecem aqui
+        // LAYOUT: Side Menu and Topbar appear here
         element: <AppLayout />, 
         children: [
           
-          // --- ÁREA DE GESTÃO (Admin e Proprietário) ---
+          // --- MANAGEMENT AREA (Admin and Owner) ---
           {
             element: <PrivateRoute allowedRoles={['admin', 'proprietario']} />,
             children: [
@@ -86,7 +106,7 @@ export const router = createBrowserRouter([
             ]
           },
 
-          // --- ÁREA ADMINISTRATIVA (Só Admin) ---
+          // --- ADMINISTRATIVE AREA (Admin Only) ---
           {
             element: <PrivateRoute allowedRoles={['admin']} />,
             children: [
@@ -101,7 +121,7 @@ export const router = createBrowserRouter([
             ]
           },
 
-          // --- ÁREA OPERACIONAL (Admin, Proprietário e Atendente) ---
+          // --- OPERATIONAL AREA (Admin, Owner and Attendant)) ---
           {
             element: <PrivateRoute allowedRoles={['admin', 'proprietario', 'atendente']} />,
             children: [
@@ -116,7 +136,7 @@ export const router = createBrowserRouter([
             ]
           },
 
-          // --- ÁREA DO CLIENTE (Só Cliente) ---
+          // --- CUSTOMER AREA (Customer Only) ---
           {
             element: <PrivateRoute allowedRoles={['cliente']} />,
             children: [
