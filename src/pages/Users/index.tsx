@@ -62,10 +62,10 @@ export function Users() {
               onChange={e => setFormData({...formData, role: e.target.value})}
             >
               {/* Values must match Database ENUMs */}
-              <option value="admin">Administrador (Admin)</option>
-              <option value="proprietario">Proprietário (Owner)</option>
-              <option value="atendente">Atendente (Attendant)</option>
-              <option value="cliente">Cliente (Client)</option>
+              <option value="admin">Administrador</option>
+              <option value="atendente">Atendente</option>
+              <option value="cliente">Cliente</option>
+              <option value="proprietario">Proprietário</option>
             </select>
           </div>
 
