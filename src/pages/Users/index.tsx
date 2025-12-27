@@ -1,7 +1,7 @@
 // src/pages/Users/UserPage.tsx
 import { useUsers } from '../../hooks/useUsers'; // Import the new logic hook
 
-export function UserPage() {
+export function Users() {
   // Extract logic and state from the custom hook
   const {
     users,
@@ -175,4 +175,4 @@ export function UserPage() {
 }
 
 // Ensure default export is present
-export default UserPage;
+export default Users;

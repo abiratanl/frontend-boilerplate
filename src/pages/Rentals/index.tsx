@@ -1,5 +1,5 @@
 // Simple placeholder for the Rentals POS screen
-export default function RentalPage() {
+export default function Rentals() {
   return (
     <div className="p-6">
       <header className="mb-6">

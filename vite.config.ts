@@ -1,4 +1,5 @@
-import { defineConfig } from 'vite'
+/// <reference types="vitest" />
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 
@@ -13,12 +14,20 @@ export default defineConfig({
     },
   },
 
-  // Added Docker configuration
+  // Added Docker configuration (Kept as is)
   server: {
     host: true, // Necessary to expose the app outside the container
     port: 5173, // Forces the default port
     watch: {
       usePolling: true, // Fix for hot-reload issues in some Docker environments (Windows/WSL)
     },
+  },
+
+  // New Test Configuration
+  test: {
+    globals: true, // Allows using describe, it, expect without importing
+    environment: 'jsdom', // Simulates a browser environment for React components
+    setupFiles: './src/setupTests.ts', // Points to your setup file
+    css: true, // Processes CSS files (important for Tailwind classes in tests)
   },
 })

@@ -5,7 +5,6 @@ import api from '../services/api';
 export function useLogin() {
     const navigate = useNavigate();
     
-    // State management for form inputs and UI status
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
@@ -17,46 +16,62 @@ export function useLogin() {
         setError('');
 
         try {
-            // 1. Send login request to the API
             const response = await api.post('/auth/login', { email, password });
             
-            // 2. Extract Token and User data from response
-            // Adjust 'response.data.data.user' vs 'response.data.user' based on your exact API return
-            const { token, data } = response.data; 
-            const user = data?.user || data; 
+            // --- DEBUG: See this in the Chrome Console (F12) ---
+            console.log("🔥 Resposta Bruta da API:", response.data);
 
-            // 3. Persist session data in LocalStorage
+            const responseBody = response.data;
+
+            // 1. Robust Token and User Extraction
+            // Try retrieving it directly from the root OR from within a 'data' property.
+            const token = responseBody.token || responseBody.data?.token;
+            
+            let user = responseBody.user;
+            if (!user && responseBody.data) {
+                user = responseBody.data.user || responseBody.data;
+            }
+
+            if (!user || !token) {
+                throw new Error("Formato de resposta da API inválido ou credenciais incorretas.");
+            }
+
+            console.log("✅ Usuário identificado:", user.role);
+
+            // 2. Persistence
             localStorage.setItem('token', token);
             localStorage.setItem('user', JSON.stringify(user));
 
-            // 4. Smart Redirection based on User Role 🔀
+            // 3. Update default Axios header (Important for future calls)
+            api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+            // 4. Redirection
             switch (user.role) {
                 case 'admin':
-                    // System Admin -> Control Panel (User Management / Settings)
-                    console.log("Admin logged in. Redirecting to User Management.");
                     navigate('/users'); 
                     break;
                 
                 case 'proprietario':
-                    // Business Owner -> Managerial Dashboard (Charts/Stats)
-                    console.log("Owner logged in. Redirecting to Dashboard.");
                     navigate('/dashboard'); 
                     break;
                 
                 case 'atendente':
-                    // Sales Attendant -> POS / Rental Page (Operational focus)
-                    console.log("Attendant logged in. Redirecting to Rentals.");
                     navigate('/rentals'); 
                     break;
 
+                case 'cliente':
+                     navigate('/client-area'); 
+                     break;
+
                 default:
-                    // Fallback for unknown roles
-                    navigate('/dashboard');
+                    console.warn("⚠️ Role desconhecida, redirecionando para home");
+                    navigate('/Home');
             }
 
         } catch (err: any) {
-            console.error("Login Error:", err);
-            const msg = err.response?.data?.message || 'Failed to connect to the server.';
+            console.error("❌ Erro no Login:", err);
+            // If it's a JS (parsing) error, it shows a generic message. If it's an API error, it shows the backend message.
+            const msg = err.response?.data?.message || err.message || 'Falha ao conectar com o servidor.';
             setError(msg);
         } finally {
             setLoading(false);

@@ -9,15 +9,16 @@ import { AuthLayout } from '../components/layouts/AuthLayout';
 import { PrivateRoute } from '../components/PrivateRoute';
 
 // Lazy Loading Pages (Code Splitting)
-const Home = lazy(() => import('../pages/Home'));
-const Dashboard = lazy(() => import('../pages/Dashboard'));
-const Login = lazy(() => import('../pages/Login'));
 const ChangePassword = lazy(() => import('../pages/ChangePassword'));
+const Clients = lazy(() => import('../pages/Clients'));
+const Dashboard = lazy(() => import('../pages/Dashboard'));
+const Home = lazy(() => import('../pages/Home'));
+const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFound'));
-const RentalPage = lazy(() => import('../pages/Rentals/RentalPage'));
+const Rentals = lazy(() => import('../pages/Rentals'));
+const Users = lazy(() => import('../pages/Users')); 
 
-// --- 1. ADICIONE ESTA LINHA (Import da nova página) ---
-const Users = lazy(() => import('../pages/Users/UserPage')); 
+
 
 // Simple Loading Component
 const Loading = () => <div style={{ padding: 20 }}>Loading...</div>;
@@ -85,10 +86,19 @@ export const router = createBrowserRouter([
             path: "/rentals", 
             element: (
               <Suspense fallback={<Loading />}>
-                <RentalPage />
+                <Rentals />
               </Suspense>
             )
-          }         
+          },
+          // Client (NEW)
+          {
+            path: "/client-area", 
+            element: (
+              <Suspense fallback={<Loading />}>
+                <Clients/>
+              </Suspense>
+            )
+          }                  
         ]
         
       }

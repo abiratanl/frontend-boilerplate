@@ -1,8 +1,8 @@
 // src/pages/Login/index.tsx
-import { useLogin } from '../../hooks/useLogin'; // Importe o Hook novo
+import { useLogin } from '../../hooks/useLogin';
 
 export default function Login() {
-  // Chamamos o hook e pegamos só o que precisamos
+  // Extracting only necessary values and functions from the custom hook
   const { 
     email, setEmail, 
     password, setPassword, 
@@ -18,6 +18,7 @@ export default function Login() {
           Acesso ao Sistema
         </h2>
 
+        {/* Error Message Display */}
         {error && (
           <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm text-center">
             {error}
@@ -25,9 +26,18 @@ export default function Login() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          
+          {/* Email Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
+            {/* 'htmlFor' must match the input 'id' for accessibility and testing */}
+            <label 
+              htmlFor="email" 
+              className="block text-sm font-medium text-gray-700"
+            >
+              Email
+            </label>
             <input
+              id="email" 
               type="email"
               required
               className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500"
@@ -36,9 +46,16 @@ export default function Login() {
             />
           </div>
 
+          {/* Password Field */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Senha</label>
+            <label 
+              htmlFor="password" 
+              className="block text-sm font-medium text-gray-700"
+            >
+              Senha
+            </label>
             <input
+              id="password"
               type="password"
               required
               className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500"
@@ -47,6 +64,7 @@ export default function Login() {
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
