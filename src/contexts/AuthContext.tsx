@@ -1,5 +1,6 @@
 // src/contexts/AuthContext.tsx
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+// Adicione 'type' antes de ReactNode
+import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { api } from '../services/api'; // Usamos a instância global configurada
 
 interface User {

@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '../../utils/test-utils';
 import Login from './index';
-import { describe, it, expect, vi, Mock } from 'vitest';
+import { describe, it, expect, vi, type Mock } from 'vitest';
 import { useLogin } from '../../hooks/useLogin';
 
 // 1. Mock do Hook: Nós "sequestramos" o hook para controlar o que ele retorna
