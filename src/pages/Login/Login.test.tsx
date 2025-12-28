@@ -35,14 +35,14 @@ describe('Página de Login', () => {
     mockUseLogin.mockReturnValue({
       email: 'teste@teste.com', setEmail: vi.fn(),
       password: '123', setPassword: vi.fn(),
-      loading: true, // <--- O PULO DO GATO
+      loading: true, 
       error: '',
       handleSubmit: vi.fn()
     });
 
     render(<Login />);
 
-    const button = screen.getByRole('button');
+    const button = screen.getByText(/entrar|entrando/i);
     
     // Verifica se mudou o texto
     expect(button).toHaveTextContent(/Entrando.../i);
