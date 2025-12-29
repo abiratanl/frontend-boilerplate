@@ -29,7 +29,7 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       // Ex: Redirect to login if token expires.
       console.error('Sessão expirada');
-      // window.location.href = '/login'; 
+      // window.location.href = '/login';
     }
     return Promise.reject(error);
   }

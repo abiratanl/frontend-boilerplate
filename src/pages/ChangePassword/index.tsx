@@ -6,12 +6,12 @@ import axios from 'axios';
 export default function ChangePassword() {
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   // State for form fields
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  
+
   // UI States
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -35,13 +35,13 @@ export default function ChangePassword() {
 
     // 1. Client-side validation
     if (newPassword !== confirmPassword) {
-      setError("New passwords do not match.");
+      setError('New passwords do not match.');
       setLoading(false);
       return;
     }
 
     if (newPassword.length < 6) {
-      setError("Password must be at least 6 characters long.");
+      setError('Password must be at least 6 characters long.');
       setLoading(false);
       return;
     }
@@ -54,12 +54,12 @@ export default function ChangePassword() {
         `${import.meta.env.VITE_API_URL}/api/auth/change-password`,
         {
           currentPassword, // Backend requirement
-          newPassword
+          newPassword,
         },
         {
           headers: {
-            Authorization: `Bearer ${tempToken}` // Use the temp token to authorize this action
-          }
+            Authorization: `Bearer ${tempToken}`, // Use the temp token to authorize this action
+          },
         }
       );
 
@@ -69,10 +69,9 @@ export default function ChangePassword() {
         // Redirect to login after 2 seconds so the user can sign in with new credentials
         navigate('/auth/login');
       }, 2000);
-
     } catch (err: any) {
       console.error(err);
-      const msg = err.response?.data?.message || "Failed to change password.";
+      const msg = err.response?.data?.message || 'Failed to change password.';
       setError(msg);
     } finally {
       setLoading(false);
@@ -92,24 +91,40 @@ export default function ChangePassword() {
   return (
     <div style={{ padding: '20px', maxWidth: '400px', margin: '0 auto' }}>
       <h2 style={{ textAlign: 'center' }}>Change Password</h2>
-      <p style={{ textAlign: 'center', color: '#666', fontSize: '0.9rem', marginBottom: '20px' }}>
+      <p
+        style={{
+          textAlign: 'center',
+          color: '#666',
+          fontSize: '0.9rem',
+          marginBottom: '20px',
+        }}
+      >
         For security reasons, you must change your password on the first access.
       </p>
 
       {error && (
-        <div style={{ 
-          backgroundColor: '#ffebee', color: '#c62828', 
-          padding: '10px', borderRadius: '4px', marginBottom: '15px' 
-        }}>
+        <div
+          style={{
+            backgroundColor: '#ffebee',
+            color: '#c62828',
+            padding: '10px',
+            borderRadius: '4px',
+            marginBottom: '15px',
+          }}
+        >
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-        
+      <form
+        onSubmit={handleSubmit}
+        style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}
+      >
         {/* Current Password Field */}
         <div>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Current Password</label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>
+            Current Password
+          </label>
           <input
             type="password"
             value={currentPassword}
@@ -122,7 +137,9 @@ export default function ChangePassword() {
 
         {/* New Password Field */}
         <div>
-          <label style={{ display: 'block', marginBottom: '5px' }}>New Password</label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>
+            New Password
+          </label>
           <input
             type="password"
             value={newPassword}
@@ -135,7 +152,9 @@ export default function ChangePassword() {
 
         {/* Confirm Password Field */}
         <div>
-          <label style={{ display: 'block', marginBottom: '5px' }}>Confirm New Password</label>
+          <label style={{ display: 'block', marginBottom: '5px' }}>
+            Confirm New Password
+          </label>
           <input
             type="password"
             value={confirmPassword}
@@ -146,17 +165,17 @@ export default function ChangePassword() {
           />
         </div>
 
-        <button 
-          type="submit" 
+        <button
+          type="submit"
           disabled={loading}
-          style={{ 
-            padding: '12px', 
-            backgroundColor: '#1976d2', 
-            color: 'white', 
-            border: 'none', 
-            borderRadius: '4px', 
+          style={{
+            padding: '12px',
+            backgroundColor: '#1976d2',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
             cursor: loading ? 'not-allowed' : 'pointer',
-            opacity: loading ? 0.7 : 1
+            opacity: loading ? 0.7 : 1,
           }}
         >
           {loading ? 'Updating...' : 'Update Password'}

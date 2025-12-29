@@ -1,12 +1,12 @@
 /* Na v4, usamos @import, não @tailwind */
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Definimos as cores do Madri Noivas aqui */
 @theme {
-  --color-madriRose: #E11D48;
-  --color-madriGold: #D97706;
-  --color-madriBg: #F3F4F6;
-  --color-madriDark: #18181B;
+  --color-madriRose: #e11d48;
+  --color-madriGold: #d97706;
+  --color-madriBg: #f3f4f6;
+  --color-madriDark: #18181b;
 }
 
 /* Isso força o Dark Mode a funcionar pela classe 'dark' do botão, 

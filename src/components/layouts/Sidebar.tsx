@@ -1,11 +1,11 @@
 // src/components/layouts/Sidebar.tsx
 import { NavLink } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  ShoppingBag, 
-  LogOut, 
-  CalendarDays 
+import {
+  LayoutDashboard,
+  Users,
+  ShoppingBag,
+  LogOut,
+  CalendarDays,
 } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -14,44 +14,44 @@ const MENU_ITEMS = [
     label: 'Dashboard',
     path: '/dashboard',
     icon: LayoutDashboard,
-    allowedRoles: ['admin', 'proprietario']
+    allowedRoles: ['admin', 'proprietario'],
   },
   {
     label: 'Usuários',
     path: '/users',
     icon: Users,
-    allowedRoles: ['admin']
+    allowedRoles: ['admin'],
   },
   {
     label: 'Aluguéis',
     path: '/rentals',
     icon: ShoppingBag,
-    allowedRoles: ['admin', 'proprietario', 'atendente']
+    allowedRoles: ['admin', 'proprietario', 'atendente'],
   },
   {
     label: 'Minha Área',
     path: '/client-area',
     icon: CalendarDays,
-    allowedRoles: ['cliente']
-  }
+    allowedRoles: ['cliente'],
+  },
 ];
 
 export function Sidebar() {
   const { user, signOut } = useAuth();
 
   // --- DEBUG FORCE (Veja isso no Console F12) ---
-  console.log("🔍 SIDEBAR DEBUG:", { 
-    usuarioLogado: user?.name, 
+  console.log('🔍 SIDEBAR DEBUG:', {
+    usuarioLogado: user?.name,
     roleNoContexto: user?.role,
-    roleEsperada: 'atendente' 
+    roleEsperada: 'atendente',
   });
 
-  if (!user) return null; 
+  if (!user) return null;
 
   // Normalização: Converte tudo para minúsculo para garantir a comparação
   const userRole = user.role.toLowerCase();
 
-  const filteredItems = MENU_ITEMS.filter(item => 
+  const filteredItems = MENU_ITEMS.filter((item) =>
     item.allowedRoles.includes(userRole)
   );
 
@@ -73,8 +73,8 @@ export function Sidebar() {
             to={item.path}
             className={({ isActive }) =>
               `flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive 
-                  ? 'bg-blue-600 text-white shadow-lg' 
+                isActive
+                  ? 'bg-blue-600 text-white shadow-lg'
                   : 'text-slate-300 hover:bg-slate-800 hover:text-white'
               }`
             }

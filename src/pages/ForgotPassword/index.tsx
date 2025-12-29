@@ -1,11 +1,14 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { authService } from "../../services/authService";
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { authService } from '../../services/authService';
 
 export default function ForgotPassword() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState<{type: 'success' | 'error', text: string} | null>(null);
+  const [message, setMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,12 +17,15 @@ export default function ForgotPassword() {
 
     try {
       await authService.forgotPassword(email);
-      setMessage({ type: 'success', text: 'Se o e-mail existir, você receberá um link em instantes.' });
-      setEmail(""); 
+      setMessage({
+        type: 'success',
+        text: 'Se o e-mail existir, você receberá um link em instantes.',
+      });
+      setEmail('');
     } catch (error: any) {
-      setMessage({ 
-        type: 'error', 
-        text: error.response?.data?.message || 'Erro ao enviar solicitação.' 
+      setMessage({
+        type: 'error',
+        text: error.response?.data?.message || 'Erro ao enviar solicitação.',
       });
     } finally {
       setLoading(false);
@@ -29,27 +35,34 @@ export default function ForgotPassword() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-madriBg dark:bg-madriDark px-4 transition-colors duration-300">
       <div className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-2xl shadow-xl p-8 transition-colors duration-300">
-        
         <div className="text-center mb-6">
-          <h1 className="text-2xl font-semibold text-madriRose">Recuperar Acesso</h1>
+          <h1 className="text-2xl font-semibold text-madriRose">
+            Recuperar Acesso
+          </h1>
           <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
             Informe seu e-mail para receber as instruções.
           </p>
         </div>
 
         {message && (
-          <div className={`mb-4 p-3 rounded-lg text-sm text-center border
-            ${message.type === 'success' 
-              ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300' 
-              : 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-300'
-            }`}>
+          <div
+            className={`mb-4 p-3 rounded-lg text-sm text-center border
+            ${
+              message.type === 'success'
+                ? 'bg-green-50 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-300'
+                : 'bg-red-50 text-red-600 border-red-100 dark:bg-red-900/20 dark:text-red-300'
+            }`}
+          >
             {message.text}
           </div>
         )}
 
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Email
             </label>
             <input
@@ -74,7 +87,10 @@ export default function ForgotPassword() {
 
         <div className="text-center mt-6">
           {/* CORREÇÃO AQUI: Link aponta para /auth/login */}
-          <Link to="/auth/login" className="text-sm text-madriGold hover:underline">
+          <Link
+            to="/auth/login"
+            className="text-sm text-madriGold hover:underline"
+          >
             Voltar para o Login
           </Link>
         </div>

@@ -1,5 +1,5 @@
 // src/services/userService.ts
-import api from './api'; 
+import api from './api';
 
 // --- Interfaces ---
 
@@ -35,7 +35,7 @@ export const userService = {
     const response = await api.get('/users');
     return response.data;
   },
-  
+
   /**
    * POST /users
    * Creates a new user.
@@ -49,7 +49,8 @@ export const userService = {
    * PUT /users/:id
    * Updates an existing user.
    */
-  update: async (id: number, data: UpdateUserDTO) => { // CHANGED: id is number
+  update: async (id: number, data: UpdateUserDTO) => {
+    // CHANGED: id is number
     const response = await api.put(`/users/${id}`, data);
     return response.data;
   },
@@ -58,8 +59,9 @@ export const userService = {
    * DELETE /users/:id
    * Removes (or deactivates) a user.
    */
-  delete: async (id: number) => { // CHANGED: id is number
+  delete: async (id: number) => {
+    // CHANGED: id is number
     const response = await api.delete(`/users/${id}`);
     return response.data;
-  }
+  },
 };

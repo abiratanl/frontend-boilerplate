@@ -26,7 +26,9 @@ export const PrivateRoute = ({ allowedRoles }: PrivateRouteProps) => {
   // 3. Role Based Access Control (RBAC)
   // Se a rota exige roles específicas E o usuário não tem a role necessária...
   if (allowedRoles && user && !allowedRoles.includes(user.role)) {
-    console.warn(`Acesso negado: Usuário ${user.role} tentou acessar rota restrita a ${allowedRoles}`);
+    console.warn(
+      `Acesso negado: Usuário ${user.role} tentou acessar rota restrita a ${allowedRoles}`
+    );
     // Redireciona para uma página segura (Home ou Dashboard do usuário)
     return <Navigate to="/home" replace />;
   }

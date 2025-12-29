@@ -9,18 +9,19 @@ vi.mock('../../hooks/useLogin', () => ({
 }));
 
 describe('Página de Login', () => {
-  
   // Helper para resetar o mock antes de cada teste
   const mockUseLogin = useLogin as Mock;
 
   it('deve renderizar os campos corretamente (Estado Inicial)', () => {
     // Simulamos o retorno padrão do hook
     mockUseLogin.mockReturnValue({
-      email: '', setEmail: vi.fn(),
-      password: '', setPassword: vi.fn(),
+      email: '',
+      setEmail: vi.fn(),
+      password: '',
+      setPassword: vi.fn(),
       loading: false,
       error: '',
-      handleSubmit: vi.fn()
+      handleSubmit: vi.fn(),
     });
 
     render(<Login />);
@@ -33,17 +34,19 @@ describe('Página de Login', () => {
   it('deve desabilitar o botão e mudar o texto quando estiver Carregando', () => {
     // Simulamos que o hook está processando (loading: true)
     mockUseLogin.mockReturnValue({
-      email: 'teste@teste.com', setEmail: vi.fn(),
-      password: '123', setPassword: vi.fn(),
-      loading: true, 
+      email: 'teste@teste.com',
+      setEmail: vi.fn(),
+      password: '123',
+      setPassword: vi.fn(),
+      loading: true,
       error: '',
-      handleSubmit: vi.fn()
+      handleSubmit: vi.fn(),
     });
 
     render(<Login />);
 
     const button = screen.getByText(/entrar|entrando/i);
-    
+
     // Verifica se mudou o texto
     expect(button).toHaveTextContent(/Entrando.../i);
     // Verifica se está desabilitado (para evitar múltiplos cliques)
@@ -53,11 +56,13 @@ describe('Página de Login', () => {
   it('deve exibir mensagem de erro quando o login falhar', () => {
     // Simulamos que o hook retornou um erro
     mockUseLogin.mockReturnValue({
-      email: '', setEmail: vi.fn(),
-      password: '', setPassword: vi.fn(),
+      email: '',
+      setEmail: vi.fn(),
+      password: '',
+      setPassword: vi.fn(),
       loading: false,
       error: 'Credenciais Inválidas', // <--- SIMULANDO ERRO
-      handleSubmit: vi.fn()
+      handleSubmit: vi.fn(),
     });
 
     render(<Login />);
@@ -70,11 +75,13 @@ describe('Página de Login', () => {
     const handleSubmitMock = vi.fn((e) => e.preventDefault());
 
     mockUseLogin.mockReturnValue({
-      email: 'admin@teste.com', setEmail: vi.fn(),
-      password: 'b', setPassword: vi.fn(),
+      email: 'admin@teste.com',
+      setEmail: vi.fn(),
+      password: 'b',
+      setPassword: vi.fn(),
       loading: false,
       error: '',
-      handleSubmit: handleSubmitMock
+      handleSubmit: handleSubmitMock,
     });
 
     render(<Login />);
@@ -86,5 +93,4 @@ describe('Página de Login', () => {
     // Verifica se a função vinda do hook foi chamada
     expect(handleSubmitMock).toHaveBeenCalled();
   });
-
 });

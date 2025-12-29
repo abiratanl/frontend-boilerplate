@@ -15,7 +15,7 @@ export interface User {
 
 // Represents the Form State (ID is empty string when creating new)
 interface UserFormData {
-  id: number | ''; 
+  id: number | '';
   name: string;
   email: string;
   role: string;
@@ -35,7 +35,7 @@ export function useUsers() {
     name: '',
     email: '',
     role: 'atendente', // Default role for new users
-    is_active: true
+    is_active: true,
   });
 
   // --- Lifecycle ---
@@ -54,16 +54,16 @@ export function useUsers() {
     try {
       setLoading(true);
       setError(''); // Clear previous errors
-      
+
       const response = await userService.getAll();
-      
+
       // Robust check: API might return an array directly OR an object { data: [...] }
       // This prevents the app from crashing if the backend structure changes slightly
-      const userList = Array.isArray(response) ? response : (response.data || []);
-      
+      const userList = Array.isArray(response) ? response : response.data || [];
+
       setUsers(userList);
     } catch (err: any) {
-      console.error("Failed to load users:", err);
+      console.error('Failed to load users:', err);
       setError('Não foi possível carregar a lista de usuários.');
     } finally {
       setLoading(false);
@@ -80,7 +80,7 @@ export function useUsers() {
       email: user.email,
       role: user.role,
       // Converts MySQL 1/0 to Javascript true/false
-      is_active: Boolean(user.is_active) 
+      is_active: Boolean(user.is_active),
     });
     setIsEditing(true);
   };
@@ -89,12 +89,12 @@ export function useUsers() {
    * Resets the form to its initial empty state (for creating new users).
    */
   const resetForm = () => {
-    setFormData({ 
-      id: '', 
-      name: '', 
-      email: '', 
-      role: 'atendente', 
-      is_active: true 
+    setFormData({
+      id: '',
+      name: '',
+      email: '',
+      role: 'atendente',
+      is_active: true,
     });
     setIsEditing(false);
   };
@@ -105,14 +105,14 @@ export function useUsers() {
    */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); // Prevents page reload
-    
+
     try {
       if (isEditing && typeof formData.id === 'number') {
         // --- UPDATE FLOW ---
         await userService.update(formData.id, {
           name: formData.name,
           role: formData.role,
-          is_active: formData.is_active
+          is_active: formData.is_active,
         });
         alert('Usuário atualizado com sucesso!');
       } else {
@@ -120,17 +120,16 @@ export function useUsers() {
         await userService.create({
           name: formData.name,
           email: formData.email,
-          role: formData.role
+          role: formData.role,
         });
         alert('Usuário criado! Uma senha temporária foi enviada (log).');
       }
-      
+
       // On success: clear form and reload list
       resetForm();
       loadUsers();
-
     } catch (err: any) {
-      console.error("Error saving user:", err);
+      console.error('Error saving user:', err);
       // Extracts error message from Backend or uses generic fallback
       const msg = err.response?.data?.message || 'Erro ao salvar usuário.';
       alert(msg);
@@ -142,13 +141,14 @@ export function useUsers() {
    */
   const handleDelete = async (id: number) => {
     // Native confirmation dialog
-    if (!window.confirm('Tem certeza que deseja desativar este usuário?')) return;
-    
+    if (!window.confirm('Tem certeza que deseja desativar este usuário?'))
+      return;
+
     try {
       await userService.delete(id);
       loadUsers(); // Refresh list
     } catch (err) {
-      console.error("Error deleting user:", err);
+      console.error('Error deleting user:', err);
       alert('Erro ao desativar usuário.');
     }
   };
@@ -165,6 +165,6 @@ export function useUsers() {
     handleEdit,
     handleDelete,
     handleSubmit,
-    resetForm
+    resetForm,
   };
 }

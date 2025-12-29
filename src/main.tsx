@@ -7,8 +7,10 @@ import './index.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <AuthProvider> {/* Envolve o Router */}
+    <AuthProvider>
+      {' '}
+      {/* Envolve o Router */}
       <RouterProvider router={router} />
     </AuthProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);

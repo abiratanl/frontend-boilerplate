@@ -13,53 +13,66 @@ export function Users() {
     handleEdit,
     handleDelete,
     handleSubmit,
-    resetForm
+    resetForm,
   } = useUsers();
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-slate-800">User Management</h1>
+      <h1 className="text-2xl font-bold mb-4 text-slate-800">
+        User Management
+      </h1>
 
       {/* --- User Form Section --- */}
       <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 mb-8 max-w-xl">
         <h2 className="text-lg font-semibold mb-4 border-b pb-2">
           {isEditing ? 'Edit User' : 'Register New User'}
         </h2>
-        
+
         <form onSubmit={handleSubmit} className="space-y-4">
-          
           {/* Name Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Name</label>
-            <input 
-              type="text" 
+            <label className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
               required
               className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500"
               value={formData.name}
-              onChange={e => setFormData({...formData, name: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, name: e.target.value })
+              }
             />
           </div>
 
           {/* Email Input */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email</label>
-            <input 
-              type="email" 
+            <label className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
               required
-              disabled={isEditing} 
+              disabled={isEditing}
               className={`mt-1 w-full border border-gray-300 p-2 rounded ${isEditing ? 'bg-gray-100 text-gray-500 cursor-not-allowed' : ''}`}
               value={formData.email}
-              onChange={e => setFormData({...formData, email: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, email: e.target.value })
+              }
             />
           </div>
 
           {/* Role Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Role</label>
-            <select 
+            <label className="block text-sm font-medium text-gray-700">
+              Role
+            </label>
+            <select
               className="mt-1 w-full border border-gray-300 p-2 rounded focus:ring-blue-500 focus:border-blue-500 bg-white"
               value={formData.role}
-              onChange={e => setFormData({...formData, role: e.target.value})}
+              onChange={(e) =>
+                setFormData({ ...formData, role: e.target.value })
+              }
             >
               {/* Values must match Database ENUMs */}
               <option value="admin">Administrador</option>
@@ -72,14 +85,19 @@ export function Users() {
           {/* Active Status Checkbox */}
           {isEditing && (
             <div className="flex items-center">
-              <input 
+              <input
                 id="active_check"
                 type="checkbox"
                 className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 checked={formData.is_active}
-                onChange={e => setFormData({...formData, is_active: e.target.checked})}
+                onChange={(e) =>
+                  setFormData({ ...formData, is_active: e.target.checked })
+                }
               />
-              <label htmlFor="active_check" className="ml-2 block text-sm text-gray-900">
+              <label
+                htmlFor="active_check"
+                className="ml-2 block text-sm text-gray-900"
+              >
                 Active User
               </label>
             </div>
@@ -87,15 +105,15 @@ export function Users() {
 
           {/* Action Buttons */}
           <div className="flex space-x-3 pt-2">
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors shadow-sm"
             >
               {isEditing ? 'Save Changes' : 'Create User'}
             </button>
-            
+
             {isEditing && (
-              <button 
+              <button
                 type="button"
                 onClick={resetForm}
                 className="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300 transition-colors"
@@ -125,17 +143,28 @@ export function Users() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {users.map(user => (
-                <tr key={user.id} className="hover:bg-gray-50 transition-colors">
-                  <td className="p-4 text-sm font-medium text-gray-900">{user.name}</td>
+              {users.map((user) => (
+                <tr
+                  key={user.id}
+                  className="hover:bg-gray-50 transition-colors"
+                >
+                  <td className="p-4 text-sm font-medium text-gray-900">
+                    {user.name}
+                  </td>
                   <td className="p-4 text-sm text-gray-600">{user.email}</td>
                   <td className="p-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold
-                      ${user.role === 'admin' ? 'bg-purple-100 text-purple-800' : 
-                        user.role === 'proprietario' ? 'bg-indigo-100 text-indigo-800' :
-                        user.role === 'atendente' ? 'bg-green-100 text-green-800' :
-                        'bg-gray-100 text-gray-800'
-                      }`}>
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs font-semibold
+                      ${
+                        user.role === 'admin'
+                          ? 'bg-purple-100 text-purple-800'
+                          : user.role === 'proprietario'
+                            ? 'bg-indigo-100 text-indigo-800'
+                            : user.role === 'atendente'
+                              ? 'bg-green-100 text-green-800'
+                              : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
                       {user.role.toUpperCase()}
                     </span>
                   </td>
@@ -151,13 +180,13 @@ export function Users() {
                     )}
                   </td>
                   <td className="p-4 text-right space-x-3">
-                    <button 
+                    <button
                       onClick={() => handleEdit(user)}
                       className="text-blue-600 hover:text-blue-900 text-sm font-medium"
                     >
                       Edit
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleDelete(user.id)}
                       className="text-red-600 hover:text-red-900 text-sm font-medium"
                     >

@@ -1,8 +1,8 @@
-# 🚀 React Professional Boilerplate (2025) #
+# 🚀 React Professional Boilerplate (2025)
 
 This is a robust, scalable frontend boilerplate configured with modern web development best practices. It uses **React**, **TypeScript**, **Vite**, and **Tailwind CSS v4**, ready to connect with an API (Node/MySQL).
 
-## 🛠 Tech Stack ##
+## 🛠 Tech Stack
 
 - **Core:** React 19+, TypeScript, Vite
 - **Styling:** Tailwind CSS v4 (Native engine, no config file), Lucide React (Icons), clsx & tailwind-merge
@@ -12,7 +12,7 @@ This is a robust, scalable frontend boilerplate configured with modern web devel
 - **Forms:** React Hook Form + Zod (Schema Validation)
 - **Code Quality:** ESLint, Prettier (via standard Vite config)
 
-## 📂 Folder Structure (Feature-Based) ##
+## 📂 Folder Structure (Feature-Based)
 
 The project follows a feature-based architecture to ensure maintainability and scalability.
 
@@ -33,9 +33,10 @@ src/
 ├── types/               # Global TypeScript type definitions
 └── utils/               # Pure utility functions
 ```
+
 <br>
 
-## 🚀 Getting Started ##
+## 🚀 Getting Started
 
 Install dependencies:
 
@@ -44,8 +45,8 @@ Bash:
 
 npm install
 ```
-Run the development server:
 
+Run the development server:
 
 ```
 Bash:
@@ -54,7 +55,6 @@ npm run dev
 ```
 
 Build for production:
-
 
 ```
 Bash:
@@ -105,16 +105,16 @@ The `QueryClient` is initialized in `src/main.tsx` with optimized defaults:
 
 <br>
 
-## 📝 Suggested Next Steps ##
+## 📝 Suggested Next Steps
 
 Create a .env file in the root directory with your API URL:
-
 
 ```
 Snippet de código:
 
 VITE_API_URL=http://localhost:3000/api
 ```
+
 Develop the Base Layout in `src/components/layout`.
 
 Create your first feature in `src/features`.
